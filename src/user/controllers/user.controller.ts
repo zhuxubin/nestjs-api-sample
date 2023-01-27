@@ -14,12 +14,12 @@ export class UserController {
 
     @Get('/profile')
     async getUserProfile(@ReqUser() user: any) {
-        return this.userService.findUser(user.username);
+        console.log(user);
+        // return this.userService.findUser(user.username);
     }
 
     @Post('/find')
     async findUser(@Body() dto: UserDto) {
-        console.log(dto);
         const { username } = dto;
         const user = await this.userService.findUser(username);
         if (!user) {

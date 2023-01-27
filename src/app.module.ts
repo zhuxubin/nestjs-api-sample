@@ -1,14 +1,12 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
 
-import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { ConfigEnum } from './common/eumn/config.enum';
-import { AppInterceptor } from './common/interceptors/app.interceptor';
+import { MemoModule } from './memo/memo.module';
 import { UserModule } from './user/user.module';
 
 // 根据变量读取环境类型（）
@@ -51,14 +49,15 @@ const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
         }),
         UserModule,
         AuthModule,
+        MemoModule,
     ],
-    controllers: [AppController],
+    controllers: [],
     providers: [
         Logger,
-        {
-            provide: APP_INTERCEPTOR, // 拦截器
-            useClass: AppInterceptor,
-        },
+        // {
+        //     provide: APP_INTERCEPTOR, // 拦截器
+        //     useClass: AppInterceptor,
+        // },
     ],
     exports: [Logger],
 })

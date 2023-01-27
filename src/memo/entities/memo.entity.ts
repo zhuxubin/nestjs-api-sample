@@ -3,45 +3,31 @@ import {
     Column,
     Entity,
     PrimaryGeneratedColumn,
-    OneToOne,
-    JoinColumn,
     CreateDateColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-import { Memo } from '@/memo/entities';
-
-import { Profile } from './profile.entity';
-
 @Entity()
-export class User {
+export class Memo {
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column()
-    username: string;
+    title: string;
 
-    @Column()
+    @Column('uuid')
     @Exclude()
-    password: string;
-
-    @Column()
-    avatar: string;
-
-    @OneToOne(() => Profile, (profile) => profile.user)
-    profile: Profile;
-
-    @OneToOne(() => Memo)
-    @JoinColumn()
-    memo: Memo;
+    userId: number;
 
     @Type(() => Date)
+    // @Exclude()
     @CreateDateColumn({
         comment: '创建时间',
     })
     createdAt: Date;
 
     @Type(() => Date)
+    // @Exclude()
     @UpdateDateColumn({
         comment: '更新时间',
     })
