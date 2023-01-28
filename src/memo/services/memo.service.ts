@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { MemoDto, MemoListDto } from '../dtos';
 import { Memo } from '../entities';
@@ -15,17 +15,22 @@ export class MemoService {
     }
 
     async findOne(id: string) {
-        return this.memoRepository.findOne({
+        const item = await this.memoRepository.findOne({
             where: { id },
         });
+        if (!item) {
+            throw new NotFoundException(`数据${id}不存在`);
+        }
+        return item;
     }
 
     async addMemo(dto: MemoDto, userId: number) {
         const data = { title: dto.title, userId } as Memo;
-        return this.memoRepository.save(data);
+        const item = await this.memoRepository.save(data);
+        return this.findOne(item.id);
     }
 
     async delMemo(id: string) {
-        return this.memoRepository.delete(id);
+        return this.memoRepository.softDelete(id);
     }
 }

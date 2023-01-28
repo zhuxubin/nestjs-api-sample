@@ -1,11 +1,15 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core/constants';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import * as Joi from 'joi';
 
+import { AppIntercepter, TransformInterceptor } from '@/common/interceptors';
+
 import { AuthModule } from './auth/auth.module';
 import { ConfigEnum } from './common/eumn/config.enum';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 import { MemoModule } from './memo/memo.module';
 import { UserModule } from './user/user.module';
 
@@ -54,10 +58,18 @@ const envFilePath = `.env.${process.env.NODE_ENV || `development`}`;
     controllers: [],
     providers: [
         Logger,
-        // {
-        //     provide: APP_INTERCEPTOR, // 拦截器
-        //     useClass: AppInterceptor,
-        // },
+        {
+            provide: APP_INTERCEPTOR, // 序列化拦截器
+            useClass: AppIntercepter,
+        },
+        {
+            provide: APP_INTERCEPTOR, // 数据转换拦截器
+            useClass: TransformInterceptor,
+        },
+        {
+            provide: APP_FILTER, // http过滤器，捕抓异常且记录日志
+            useValue: new HttpExceptionFilter(Logger),
+        },
     ],
     exports: [Logger],
 })

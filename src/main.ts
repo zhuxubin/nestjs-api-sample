@@ -10,12 +10,10 @@ import winston, { createLogger } from 'winston';
 import 'winston-daily-rotate-file';
 
 import { AppModule } from './app.module';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
-import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 
-import path from 'path';
+import * as path from 'path';
 
 async function bootstrap() {
     // 创建第三方日志模块Winston
@@ -84,8 +82,6 @@ async function bootstrap() {
         }),
     );
 
-    app.useGlobalInterceptors(new TransformInterceptor()); // 格式化输出
-    app.useGlobalFilters(new HttpExceptionFilter(logger)); // 补助异常，并且记录日志
     app.useStaticAssets({ root: path.join(__dirname, '..', 'public') }); // 静态文件路径
     app.enableCors();
 

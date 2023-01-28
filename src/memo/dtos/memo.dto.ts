@@ -5,7 +5,7 @@ import { PaginateDto } from '@/common/dtos';
 
 @Injectable()
 export class MemoDto {
-    @Length(4, 50, { always: true })
+    @Length(6, 50, { always: true, message: '标题长度不小于为$constraint1' })
     title!: string;
 }
 

@@ -6,12 +6,7 @@ import {
     ValidatorConstraintInterface,
 } from 'class-validator';
 
-/**
- * @description 判断两个字段的值是否相等的验证规则
- * @export
- * @class MatchConstraint
- * @implements {ValidatorConstraintInterface}
- */
+// 判断两个字段的值是否相等的验证规则
 @ValidatorConstraint({ name: 'isMatch' })
 export class MatchConstraint implements ValidatorConstraintInterface {
     validate(value: any, args: ValidationArguments) {

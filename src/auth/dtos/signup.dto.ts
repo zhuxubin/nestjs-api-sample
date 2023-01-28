@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IsNotEmpty, Length } from 'class-validator';
 
-import { IsMatch } from '@/common/constraints';
+import { IsMatch, IsUnique } from '@/common/constraints';
+import { User } from '@/user/entities';
 
 /**
  * 创建用户验证
@@ -9,6 +10,13 @@ import { IsMatch } from '@/common/constraints';
 @Injectable()
 export class SignupDto {
     @Length(4, 50, { always: true, message: '用户名不得少于$constraint1' })
+    @IsUnique(
+        { entity: User },
+        {
+            groups: ['user-register'],
+            message: '该用户名已被注册',
+        },
+    )
     username!: string;
 
     @Length(6, 8, {
