@@ -15,6 +15,8 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 
 import * as path from 'path';
 
+import { useContainer } from 'class-validator';
+
 async function bootstrap() {
     // 创建第三方日志模块Winston
     const instance = createLogger({
@@ -81,7 +83,7 @@ async function bootstrap() {
             },
         }),
     );
-
+    useContainer(app.select(AppModule), { fallbackOnErrors: true });
     app.useStaticAssets({ root: path.join(__dirname, '..', 'public') }); // 静态文件路径
     app.enableCors();
 

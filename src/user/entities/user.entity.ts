@@ -1,4 +1,4 @@
-import { Exclude, Type } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import {
     Column,
     Entity,
@@ -14,11 +14,14 @@ import { Memo } from '@/memo/entities';
 import { Profile } from './profile.entity';
 
 @Entity()
+@Exclude()
 export class User {
     @PrimaryGeneratedColumn('uuid')
+    @Expose()
     id: number;
 
     @Column()
+    @Expose()
     username: string;
 
     @Column()
@@ -26,6 +29,7 @@ export class User {
     password: string;
 
     @Column()
+    @Expose()
     avatar: string;
 
     @OneToOne(() => Profile, (profile) => profile.user)

@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigEnum } from '@/common/eumn/config.enum';
 import { UserModule } from '@/user/user.module';
 
+import { UniqueConstraint } from './constraints';
 import * as controllers from './controllers';
 import * as dtos from './dtos';
 import * as services from './services';
@@ -30,7 +31,12 @@ import * as strategies from './strategies';
             },
         }),
     ],
-    providers: [...Object.values(services), ...Object.values(dtos), ...Object.values(strategies)],
+    providers: [
+        ...Object.values(services),
+        ...Object.values(dtos),
+        ...Object.values(strategies),
+        UniqueConstraint,
+    ],
     controllers: [...Object.values(controllers)],
     exports: [],
 })

@@ -14,8 +14,7 @@ export class UserController {
 
     @Get('/profile')
     async getUserProfile(@ReqUser() user: any) {
-        console.log(user);
-        // return this.userService.findUser(user.username);
+        return this.userService.findUser(user.id);
     }
 
     @Post('/find')
